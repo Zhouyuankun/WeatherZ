@@ -16,7 +16,7 @@ The iOS development features in this app includes:
 The function of this app:
 
 - Always get current location and its weather
-  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/permission.png?raw=true" style="zoom:20%;" /><img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/main.jpeg?raw=true" style="zoom:20%;" />
+  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/permission.jpeg?raw=true" style="zoom:20%;" /><img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/main.jpeg?raw=true" style="zoom:20%;" />
 - Can add city from server GeoInfo or device GeoInfo(switch by top right button)
   <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/serach.jpeg?raw=true" style="zoom:20%;" />
 - Can browser the current weather infomation
@@ -26,7 +26,7 @@ The function of this app:
   - Sun Position(sunset,sunrise,progress)
   - Humidity,Pressure,Visibility
   <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/weather1.jpeg?raw=true" style="zoom:20%;" />
-  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/weather2.PNG?raw=true" style="zoom:20%;" />
+  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/weather2.jpeg?raw=true" style="zoom:20%;" />
   
 ### The image resources are from Web, which is not intended for commercial usage ! Study use only !
 
