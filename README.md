@@ -16,7 +16,7 @@ The iOS development features in this app includes:
 The function of this app:
 
 - Always get current location and its weather
-  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/permission.jpg" style="zoom:20%;" /><img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/main.jpg" style="zoom:20%;" />
+  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/permission.jpg" width="210px" /><img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/main.jpg" style="zoom:20%;" />
 - Can add city from server GeoInfo or device GeoInfo(switch by top right button)
   <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/serach.jpg" style="zoom:20%;" />
 - Can browser the current weather infomation
