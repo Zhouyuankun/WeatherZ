@@ -16,15 +16,20 @@ The iOS development features in this app includes:
 The function of this app:
 
 - Always get current location and its weather
+  
   <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/permission.jpg" width="210px" /><img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/main.jpg" width="210px" />
+  
 - Can add city from server GeoInfo or device GeoInfo(switch by top right button)
+  
   <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/search.jpg" width="210px" />
+  
 - Can browser the current weather infomation
   - Different color scheme for different weather
   - Temperature(min, max,feels)
   - Wind(speed, gust,direction)
   - Sun Position(sunset,sunrise,progress)
   - Humidity,Pressure,Visibility
+    
   <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/weather1.jpg" width="210px" />
   <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/weather2.jpg" width="210px" />
   
