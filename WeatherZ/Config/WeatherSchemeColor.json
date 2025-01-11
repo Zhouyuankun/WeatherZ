@@ -1,0 +1,94 @@
+[
+  {
+    "type": "Thunderstorm",
+    "primary_color": "#7C6D80",
+    "secondary_color": "#5D11F7",
+    "image_auto": "Thunderstorm",
+    "image_day": "Thunderstorm",
+    "image_night": "Thunderstorm",
+    "backgound": "Thunderstorm_background"
+  },
+  {
+    "type": "Drizzle",
+    "primary_color": "#D3E4E8",
+    "secondary_color": "#3DACEF",
+    "image_auto": "Drizzle",
+    "image_day": "Drizzle_day",
+    "image_night": "Drizzle_night",
+    "backgound": "Drizzle_background"
+  },
+  {
+    "type": "Rain",
+    "primary_color": "#92BADC",
+    "secondary_color": "#39586A",
+    "image_auto": "Rain",
+    "image_day": "Rain_day",
+    "image_night": "Rain_night",
+    "backgound": "Rain_background"
+  },
+  {
+    "type": "Snow",
+    "primary_color": "#EBEFFE",
+    "secondary_color": "#8FAEFA",
+    "image_auto": "Snow",
+    "image_day": "Snow",
+    "image_night": "Snow",
+    "backgound": "Snow_background"
+  },
+  {
+    "type": "Atomosphere_dust",
+    "primary_color": "#CDCDCD",
+    "secondary_color": "#808080",
+    "image_auto": "Atomosphere",
+    "image_day": "Atomosphere",
+    "image_night": "Atomosphere",
+    "backgound": "Atomosphere_background"
+  },
+  {
+    "type": "Atomosphere_fog",
+    "primary_color": "#CDCDCD",
+    "secondary_color": "#808080",
+    "image_auto": "Atomosphere",
+    "image_day": "Atomosphere",
+    "image_night": "Atomosphere",
+    "backgound": "Atomosphere_background"
+  },
+  {
+    "type": "Atomosphere_wind",
+    "primary_color": "#CDCDCD",
+    "secondary_color": "#808080",
+    "image_auto": "Atomosphere",
+    "image_day": "Atomosphere",
+    "image_night": "Atomosphere",
+    "backgound": "Atomosphere_background"
+  },
+  {
+    "type": "Clear_sun",
+    "primary_color": "#97D8E3",
+    "secondary_color": "#227EA4",
+    "image_auto": "Clear_sun",
+    "image_day": "Clear_sun_day",
+    "image_night": "Clear_sun_night",
+    "backgound": "Clear_background"
+  },
+  {
+    "type": "Clear_cloudless",
+    "primary_color": "#79D6F9",
+    "secondary_color": "#3F5673",
+    "image_auto": "Clear_cloudless",
+    "image_day": "Clear_cloudless_day",
+    "image_night": "Clear_cloudless_night",
+    "backgound": "Clear_background"
+  },
+  {
+    "type": "Clear_clouds",
+    "primary_color": "#CDCDCD",
+    "secondary_color": "#808080",
+    "image_auto": "Clear_clouds",
+    "image_day": "Clear_clouds_day",
+    "image_night": "Clear_clouds_night",
+    "backgound": "Clear_clouds_background"
+  }
+]
+
+ 

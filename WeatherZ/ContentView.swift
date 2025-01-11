@@ -6,56 +6,82 @@
 //
 
 import SwiftUI
-import SwiftData
+import CoreLocation
+
+
+var location: CLLocation?
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    @State var locationViewModel = LocationViewModel()
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
+        switch locationViewModel.authorizationStatus {
+        case .notDetermined, .restricted, .denied:
+            RequestLocationView()
+                .environment(locationViewModel)
+        case .authorizedAlways, .authorizedWhenInUse:
+            MultiCityView()
+                .environment(locationViewModel)
+        default:
+            Text("Unexpected status")
         }
     }
+}
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
+struct RequestLocationView: View {
+    @Environment(LocationViewModel.self) var locationViewModel
+    var body: some View {
+        VStack {
+            Image(systemName: "location.circle")
+                .resizable()
+                .frame(width: 100, height: 100, alignment: .center)
+                .foregroundColor(.blue)
+            Button(action: {
+                locationViewModel.checkPermission()
+            }, label: {
+                Label("Allow tracking", systemImage: "location")
+            })
+            .padding(10)
+            .foregroundColor(.white)
+            .background(Color.blue)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            Text("We need location to present weather")
+                .foregroundColor(.gray)
+                .font(.caption)
         }
     }
+}
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
+struct ErrorView: View {
+    var errorText: String
+    
+    var body: some View {
+        VStack {
+            Image(systemName: "xmark.octagon")
+                    .resizable()
+                .frame(width: 100, height: 100, alignment: .center)
+            Text(errorText)
+        }
+        .padding()
+        .foregroundColor(.white)
+        .background(Color.red)
+    }
+}
+
+struct PairView: View {
+    
+    let leftText: String
+    let rightText: String
+    
+    var body: some View {
+        HStack {
+            Text(leftText)
+            Spacer()
+            Text(rightText)
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }
