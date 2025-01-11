@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B604BC042D32CC3F007C1931 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B604BC032D32CC38007C1931 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		B604BC032D32CC38007C1931 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B6D243C52D2AA4A400267EC4 /* WeatherZ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherZ.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -45,6 +50,7 @@
 		B6D243BC2D2AA4A400267EC4 = {
 			isa = PBXGroup;
 			children = (
+				B604BC032D32CC38007C1931 /* README.md */,
 				B6D243C72D2AA4A400267EC4 /* WeatherZ */,
 				B6D243C62D2AA4A400267EC4 /* Products */,
 			);
@@ -124,6 +130,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B604BC042D32CC3F007C1931 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
