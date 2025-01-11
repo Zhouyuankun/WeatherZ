@@ -18,7 +18,7 @@ The function of this app:
 - Always get current location and its weather
   <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/permission.jpg" width="210px" /><img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/main.jpg" width="210px" />
 - Can add city from server GeoInfo or device GeoInfo(switch by top right button)
-  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/serach.jpg" width="210px" />
+  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/search.jpg" width="210px" />
 - Can browser the current weather infomation
   - Different color scheme for different weather
   - Temperature(min, max,feels)
