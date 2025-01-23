@@ -14,6 +14,8 @@ struct HomeView: View {
     
     @State private var lastRefreshTime: Date? = nil
     
+    @Environment(\.scenePhase) private var scenePhase
+    
     var city: City
     
     @State private var showMultiCityView: Bool = false
@@ -40,6 +42,8 @@ struct HomeView: View {
                 PressureSectionView(response: currentWeatherViewModel.currentWeather)
             }
             VisibilitySectionView(response: currentWeatherViewModel.currentWeather)
+            Text("\(currentWeatherViewModel.updateInfoMessage)")
+                .font(.subheadline)
         }
         .background {
             Image(weatherType.background)
@@ -65,13 +69,17 @@ struct HomeView: View {
                 await updateLocationAndWeather()
             }
         }
+        .onChange(of: scenePhase, { _, newValue in
+            if newValue == .active {
+                Task {
+                    await updateLocationAndWeather() // Call when app becomes foreground
+                }
+            }
+        })
 //        .toolbar {
 //            ToolbarItem(placement: .topBarTrailing) {
-//                Button(action: {
-//                    self.showWeatherPage = false
-//                }, label:  {
-//                    Image(systemName: "list.bullet")
-//                })
+//                Text("\(currentWeatherViewModel.updateStatus)")
+//                    .font(.subheadline)
 //            }
 //        }
     }

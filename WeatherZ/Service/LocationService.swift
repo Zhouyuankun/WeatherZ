@@ -50,8 +50,9 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         locationPub.send(lastSeenLocation)
         fetchCountryAndCity(for: lastSeenLocation)
         if let currentPlacemark = currentPlacemark {
+            printPlacemarkDetails(currentPlacemark)
             // Extract details from the placemark
-            let cityName = currentPlacemark.locality ?? "Unknown"
+            let cityName = currentPlacemark.subLocality ?? currentPlacemark.locality ?? "Unknown"
             let stateName = currentPlacemark.administrativeArea ?? nil
             let countryCode = currentPlacemark.isoCountryCode ?? "Unknown"
             let latitude = lastSeenLocation.coordinate.latitude
@@ -94,7 +95,7 @@ class LocationService: NSObject, CLLocationManagerDelegate {
             
             let filteredResponses = placemarks.compactMap { placemark -> GeoAPIResponse? in
                 // Ensure location exists and has valid coordinates
-                guard let location = placemark.location, let locality = placemark.locality, let country = placemark.country else { return nil }
+                guard let location = placemark.location, let locality = placemark.subLocality ?? placemark.locality, let country = placemark.country else { return nil }
                 
                 // Extract latitude and longitude
                 let latitude = location.coordinate.latitude
@@ -119,3 +120,53 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     
 }
 
+//Show all the location infomation
+func printPlacemarkDetails(_ placemark: CLPlacemark) {
+    print("=== CLPlacemark Details ===")
+    if let name = placemark.name {
+        print("Name: \(name)")
+    }
+    if let thoroughfare = placemark.thoroughfare {
+        print("Street: \(thoroughfare)")
+    }
+    if let subThoroughfare = placemark.subThoroughfare {
+        print("Sub-Thoroughfare: \(subThoroughfare)")
+    }
+    if let locality = placemark.locality {
+        print("City: \(locality)")
+    }
+    if let subLocality = placemark.subLocality {
+        print("Sub-Locality: \(subLocality)")
+    }
+    if let administrativeArea = placemark.administrativeArea {
+        print("State/Province: \(administrativeArea)")
+    }
+    if let subAdministrativeArea = placemark.subAdministrativeArea {
+        print("Sub-Administrative Area: \(subAdministrativeArea)")
+    }
+    if let postalCode = placemark.postalCode {
+        print("Postal Code: \(postalCode)")
+    }
+    if let country = placemark.country {
+        print("Country: \(country)")
+    }
+    if let isoCountryCode = placemark.isoCountryCode {
+        print("ISO Country Code: \(isoCountryCode)")
+    }
+    if let timeZone = placemark.timeZone {
+        print("Time Zone: \(timeZone)")
+    }
+    if let inlandWater = placemark.inlandWater {
+        print("Inland Water: \(inlandWater)")
+    }
+    if let ocean = placemark.ocean {
+        print("Ocean: \(ocean)")
+    }
+    if let areasOfInterest = placemark.areasOfInterest {
+        print("Areas of Interest: \(areasOfInterest.joined(separator: ", "))")
+    }
+    if let location = placemark.location {
+        print("Location Coordinates: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+    }
+    print("============================")
+}

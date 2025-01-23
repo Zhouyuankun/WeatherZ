@@ -19,6 +19,11 @@ extension Date {
         dateFormatter.dateFormat = "HH:mm" // Full weekday name
         return dateFormatter.string(from: self)
     }
+    var hourMinuteSecond: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss" // Full weekday name
+        return dateFormatter.string(from: self)
+    }
     var isNight: Bool {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: self)

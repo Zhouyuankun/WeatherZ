@@ -11,12 +11,30 @@ import SwiftUI
     var currentWeather: CurrentWeatherResponse = WeatherService.shared.mockCurrentWeather()
     var cityCurrentWeather: [UUID: CurrentWeatherResponse] = [:]
     
+    var updateStatus: UpdateStatus = .updated
+    var updateTime: Date = .now
+    
+    @ObservationIgnored var updateInfoMessage: String {
+        switch updateStatus {
+        case .updating:
+            return "Trying to update the weather"
+        case .updated:
+            return "The weather is updated at \(updateTime.hourMinuteSecond)"
+        case .failed:
+            return "The weather failed to update"
+        }
+    }
+    
     func loadFromWeb(lon: Double, lat: Double) async {
+        updateStatus = .updating
         let result = await WeatherService.shared.loadCurrentWeather(lon: lon, lat: lat)
         switch result {
         case .success(let currentWeather):
             self.currentWeather = currentWeather
+            updateStatus = .updated
+            updateTime = .now
         case .failure(let error):
+            updateStatus = .failed
             print(error.localizedDescription, "\(#function)")
         }
     }
@@ -103,4 +121,10 @@ func summaryFutureWeather(weatherData: [Date: [ForecastResponse.MonoWeather]]) a
     }
     result.sort { $0.dt < $1.dt }
     return result
+}
+
+enum UpdateStatus {
+    case updating
+    case updated
+    case failed
 }
