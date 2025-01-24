@@ -17,22 +17,17 @@ struct MultiCityView: View {
     
     @State private var presentWeatherPage: Bool = true
     
-    @Query var allCities: [SubscribedCity]
+    @Query var allCities: [SubscribedLocation]
     @Environment(\.modelContext) private var context
     
     @State var searchText: String = ""
-    
-    func updateLocation() async {
-        locationViewModel.updateLoc()
-    }
-    
     
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    NavigationLink(value: locationViewModel.localCity) {
-                        CityCardView(cityInfo: locationViewModel.localCity)
+                    NavigationLink(value: locationViewModel.localLocation) {
+                        CityCardView(cityInfo: locationViewModel.localLocation)
                     }
                     .deleteDisabled(true)
                 } header: {
@@ -42,8 +37,8 @@ struct MultiCityView: View {
                 
                 Section {
                     ForEach(allCities, id: \.id) { cityInfo in
-                        NavigationLink(value: cityInfo.city) {
-                            CityCardView(cityInfo: cityInfo.city)
+                        NavigationLink(value: cityInfo.location) {
+                            CityCardView(cityInfo: cityInfo.location)
                         }
                     }
                     .onDelete { offsets in
@@ -55,7 +50,7 @@ struct MultiCityView: View {
                     Text("Subscribed Locations")
                 }
             }
-            .navigationDestination(for: City.self) { city in
+            .navigationDestination(for: Location.self) { city in
                 HomeView(city: city)
                     .environment(currentWeatherViewModel)
             }
@@ -69,28 +64,24 @@ struct MultiCityView: View {
                     })
                 }
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        try! context.delete(model: SubscribedCity.self)
+                    NavigationLink(destination: {
+                        SettingView()
                     }, label: {
-                        Image(systemName: "trash")
-                        
+                        Image(systemName: "gear")
                     })
-                    
                 }
             }
         }
         .onChange(of: scenePhase, { _, newValue in
             if newValue == .active {
-                Task {
-                    await updateLocation() // Call when app becomes foreground
-                }
+                locationViewModel.updateLoc()
             }
         })
     }
 }
 
 struct CityCardView: View {
-    var cityInfo: City
+    var cityInfo: Location
     @State private var lastRefreshTime: Date? = nil
     
     @State private var currentWeatherViewModel = CurrentWeatherViewModel()
@@ -101,13 +92,15 @@ struct CityCardView: View {
     
     var body: some View {
         HStack {
-            VStack {
+            VStack(alignment: .leading) {
                 Text(cityInfo.name)
                     .font(.title)
                 Spacer()
+                Text(cityInfo.belongInfo)
+                    .font(.caption)
             }
             Spacer()
-            Text("\(currentWeatherViewModel.currentWeather.weather[0].main)")
+            Text("\(weatherType.description)")
         }
         .padding()
         .background(

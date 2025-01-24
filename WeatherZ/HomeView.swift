@@ -16,7 +16,7 @@ struct HomeView: View {
     
     @Environment(\.scenePhase) private var scenePhase
     
-    var city: City
+    var city: Location
     
     @State private var showMultiCityView: Bool = false
     
@@ -96,7 +96,7 @@ struct LargeSectionView: View {
     var body: some View {
         VStack(spacing: 10) {
             Image(weatherType.imageAuto).resizable().aspectRatio(contentMode: .fit).frame(width: 140, height: 140)
-            Text(response.weather[0].main).font(.title)
+            Text(weatherType.description).font(.title)
             Text("\(Int(response.main.temp - 273))°").font(.largeTitle)
             Text(response.weather[0].description)
                 .font(.subheadline)
@@ -114,9 +114,9 @@ struct TempSectionView: View {
     
     var body: some View {
         HStack {
-            SmallColView(text: "Min temp", iconName: "thermometer.low", value: Int(response.main.tempMin) - 273, sign: "°")
-            SmallColView(text: "Max temp", iconName: "thermometer.high", value: Int(response.main.tempMax) - 273, sign: "°")
-            SmallColView(text: "Feels temp", iconName: "thermometer.variable.and.figure", value: Int(response.main.feelsLike) - 273, sign: "°")
+            SmallColView(text: String(localized: "Min temp"), iconName: "thermometer.low", value: Int(response.main.tempMin) - 273, sign: "°")
+            SmallColView(text: String(localized: "Max temp"), iconName: "thermometer.high", value: Int(response.main.tempMax) - 273, sign: "°")
+            SmallColView(text: String(localized: "Feels temp"), iconName: "thermometer.variable.and.figure", value: Int(response.main.feelsLike) - 273, sign: "°")
         }
         .frame(maxWidth: .infinity, minHeight: 120)
         .modifier(WeatherCardModifier(weatherType: getWeatherType(from: response.weather[0].id)))
@@ -220,16 +220,16 @@ struct WindSectionView: View {
                 
                 // Directional Labels
                 VStack {
-                    Text("北")
+                    Text("North")
                     Spacer()
-                    Text("南")
+                    Text("South")
                 }
                 .frame(height: 120)
                 
                 HStack {
-                    Text("西")
+                    Text("West")
                     Spacer()
-                    Text("东")
+                    Text("East")
                         
                 }
                 .frame(width: 120)

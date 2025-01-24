@@ -145,4 +145,28 @@ extension WeatherType {
     var background: String {
         return WeatherSchemeManager.shared.getSchemeInfo(weatherType: self).backgound
     }
+    var description: String {
+        switch self {
+        case .Thunderstorm:
+            String(localized: "Thunderstorm")
+        case .Drizzle:
+            String(localized: "Drizzle")
+        case .Rain:
+            String(localized: "Rain")
+        case .Snow:
+            String(localized: "Snow")
+        case .Atomosphere_dust:
+            String(localized: "Dust")
+        case .Atomosphere_fog:
+            String(localized: "Fog")
+        case .Atomosphere_wind:
+            String(localized: "Wind")
+        case .Clear_sun:
+            String(localized: "Sun")
+        case .Clear_cloudless:
+            String(localized: "Cloudless")
+        case .Clear_clouds:
+            String(localized: "Cloud")
+        }
+    }
 }

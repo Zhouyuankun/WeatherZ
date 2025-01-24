@@ -9,7 +9,6 @@ import SwiftUI
 
 @Observable class CurrentWeatherViewModel {
     var currentWeather: CurrentWeatherResponse = WeatherService.shared.mockCurrentWeather()
-    var cityCurrentWeather: [UUID: CurrentWeatherResponse] = [:]
     
     var updateStatus: UpdateStatus = .updated
     var updateTime: Date = .now
@@ -17,11 +16,11 @@ import SwiftUI
     @ObservationIgnored var updateInfoMessage: String {
         switch updateStatus {
         case .updating:
-            return "Trying to update the weather"
+            return String(localized: "Trying to update the weather")
         case .updated:
-            return "The weather is updated at \(updateTime.hourMinuteSecond)"
+            return String(localized: "The weather is updated at \(updateTime.hourMinuteSecond)")
         case .failed:
-            return "The weather failed to update"
+            return String(localized: "The weather failed to update")
         }
     }
     

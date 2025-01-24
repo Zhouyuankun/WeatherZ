@@ -11,10 +11,11 @@ import Foundation
 class SearchCityViewModel {
     var searchText: String = ""
     var geoResult: [GeoAPIResponse] = []
-    var searchOnDevice: Bool = false
+    var searchOnDevice: Bool = true
     var showProgressIndicator: Bool = false
     
     func searchCity() async {
+        geoResult = []
         showProgressIndicator = true
         var result: Result<[GeoAPIResponse], Error>
         if searchOnDevice {

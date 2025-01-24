@@ -19,7 +19,7 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     
     var locationPub = PassthroughSubject<CLLocation, Never>()
     var authPub = PassthroughSubject<CLAuthorizationStatus, Never>()
-    var localCityPub = PassthroughSubject<City, Never>()
+    var localLocationPub = PassthroughSubject<Location, Never>()
     
     override init() {
         locationManager = CLLocationManager()
@@ -48,44 +48,22 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let lastSeenLocation = locations.first!
         locationPub.send(lastSeenLocation)
-        fetchCountryAndCity(for: lastSeenLocation)
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(lastSeenLocation) { (placemarks, error) in
+            self.currentPlacemark = placemarks?.first
+        }
         if let currentPlacemark = currentPlacemark {
             printPlacemarkDetails(currentPlacemark)
             // Extract details from the placemark
             let cityName = currentPlacemark.subLocality ?? currentPlacemark.locality ?? "Unknown"
             let stateName = currentPlacemark.administrativeArea ?? nil
-            let countryCode = currentPlacemark.isoCountryCode ?? "Unknown"
+            let countryName = currentPlacemark.country ?? "Unknown"
             let latitude = lastSeenLocation.coordinate.latitude
             let longitude = lastSeenLocation.coordinate.longitude
-            localCityPub.send(City(name: cityName, localName: cityName, state: stateName, country: countryCode, lat: latitude, lon: longitude))
+            localLocationPub.send(Location(name: cityName, localName: cityName, state: stateName, country: countryName, lat: latitude, lon: longitude, city: currentPlacemark.locality))
+            //end updating
+            manager.stopUpdatingLocation()
         }
-    }
-
-    func fetchCountryAndCity(for location: CLLocation) {
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
-            self.currentPlacemark = placemarks?.first
-        }
-    }
-    
-    func getCityNameByLocation(location: CLLocation) async throws -> String {
-        let geocoder = CLGeocoder()
-        let placemarks = try await geocoder.reverseGeocodeLocation(location)
-        if let currentPlacemark = placemarks.first {
-            var output = ""
-            if let cityName = currentPlacemark.locality {
-                output = output + "\(cityName),"
-            } else {
-                output = output + "Unknown,"
-            }
-            if let countryName = currentPlacemark.isoCountryCode {
-                output = output + "\(countryName)"
-            } else {
-                output = output + "Unknown"
-            }
-            return output
-        }
-        return "Unknown"
     }
     
     func getCityLocationInfo(cityName: String) async -> Result<[GeoAPIResponse], Error> {
@@ -108,7 +86,8 @@ class LocationService: NSObject, CLLocationManagerDelegate {
                     lat: latitude,
                     lon: longitude,
                     country: country,
-                    state: nil
+                    state: placemark.administrativeArea,
+                    city: placemark.locality
                 )
             }
             return .success(filteredResponses)

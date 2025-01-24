@@ -171,4 +171,5 @@ struct GeoAPIResponse: Codable, Hashable {
     let lon: Double
     let country: String
     let state: String?
+    let city: String?
 }

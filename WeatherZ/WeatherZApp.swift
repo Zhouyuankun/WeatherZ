@@ -12,7 +12,7 @@ import SwiftData
 struct WeatherZApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            SubscribedCity.self,
+            SubscribedLocation.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
