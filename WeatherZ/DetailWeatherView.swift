@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct HomeView: View {
+struct DetailWeatherView: View {
     @Environment(CurrentWeatherViewModel.self) var currentWeatherViewModel
     @State var forecastWeatherViewModel: ForecastWeatherViewModel = ForecastWeatherViewModel()
     
@@ -20,7 +20,7 @@ struct HomeView: View {
     
     @State private var showMultiCityView: Bool = false
     
-    var weatherType: WeatherType {
+    var currentWeatherType: WeatherType {
         return getWeatherType(from: currentWeatherViewModel.currentWeather.weather[0].id)
     }
     
@@ -31,22 +31,32 @@ struct HomeView: View {
 
     var body: some View {
         ScrollView {
-            LargeSectionView(response: currentWeatherViewModel.currentWeather)
-            SeqTempSectionView(response: forecastWeatherViewModel.forecastWeather, curRes: currentWeatherViewModel.currentWeather)
-            DailySectionView(response: forecastWeatherViewModel.dailyWeather, curRes: currentWeatherViewModel.currentWeather)
-            TempSectionView(response: currentWeatherViewModel.currentWeather)
-            WindSectionView(response: currentWeatherViewModel.currentWeather)
-            SunRiseSetView(response: currentWeatherViewModel.currentWeather)
+            LargeSectionView(mainTemp: currentWeatherViewModel.currentWeather.main.temp, detailDescription: currentWeatherViewModel.currentWeather.weather[0].description, currentWeatherType: currentWeatherType)
+            SeqTempSectionView(futureWeathers: forecastWeatherViewModel.forecastWeather.list, currentWeatherType: currentWeatherType)
+            DailySectionView(dailyWeathers: forecastWeatherViewModel.dailyWeather, currentWeatherType: currentWeatherType)
+            TempSectionView(tempMin: currentWeatherViewModel.currentWeather.main.tempMin, tempMax: currentWeatherViewModel.currentWeather.main.tempMax, feelsLike: currentWeatherViewModel.currentWeather.main.feelsLike, currentWeatherType: currentWeatherType)
+            WindSectionView(windSpeed: currentWeatherViewModel.currentWeather.wind.speed, windDeg: currentWeatherViewModel.currentWeather.wind.deg, windGust: currentWeatherViewModel.currentWeather.wind.gust, currentWeatherType: currentWeatherType)
+        
+            SunRiseSetView(sunrise: currentWeatherViewModel.currentWeather.sys.sunrise, sunset: currentWeatherViewModel.currentWeather.sys.sunset, currentWeatherType: currentWeatherType)
             HStack(spacing: 0) {
-                HumiditySectionView(response: currentWeatherViewModel.currentWeather)
-                PressureSectionView(response: currentWeatherViewModel.currentWeather)
+                HumiditySectionView(humidity: currentWeatherViewModel.currentWeather.main.humidity, currentWeatherType: currentWeatherType)
+                PressureSectionView(pressure: currentWeatherViewModel.currentWeather.main.pressure, currentWeatherType: currentWeatherType)
             }
-            VisibilitySectionView(response: currentWeatherViewModel.currentWeather)
+            if let visibility = currentWeatherViewModel.currentWeather.visibility {
+                VisibilitySectionView(visibility: visibility, currentWeatherType: currentWeatherType)
+            }
+            if let rainPrecipitation = currentWeatherViewModel.currentWeather.rain?.oneH {
+                RainSectionView(precipitation: rainPrecipitation, currentWeatherType: currentWeatherType)
+            }
+            if let snowPrecipitation = currentWeatherViewModel.currentWeather.snow?.oneH {
+                SnowSectionView(precipitation: snowPrecipitation, currentWeatherType: currentWeatherType)
+            }
             Text("\(currentWeatherViewModel.updateInfoMessage)")
                 .font(.subheadline)
         }
+        .scrollIndicators(.hidden)
         .background {
-            Image(weatherType.background)
+            Image(currentWeatherType.background)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .overlay(.ultraThinMaterial)
@@ -76,29 +86,20 @@ struct HomeView: View {
                 }
             }
         })
-//        .toolbar {
-//            ToolbarItem(placement: .topBarTrailing) {
-//                Text("\(currentWeatherViewModel.updateStatus)")
-//                    .font(.subheadline)
-//            }
-//        }
     }
 }
 
 struct LargeSectionView: View {
-    var response: CurrentWeatherResponse
-    @Environment(LocationViewModel.self) var locationViewModel
-    
-    var weatherType: WeatherType {
-        return getWeatherType(from: response.weather[0].id)
-    }
+    let mainTemp: Double
+    let detailDescription: String
+    let currentWeatherType: WeatherType
     
     var body: some View {
         VStack(spacing: 10) {
-            Image(weatherType.imageAuto).resizable().aspectRatio(contentMode: .fit).frame(width: 140, height: 140)
-            Text(weatherType.description).font(.title)
-            Text("\(Int(response.main.temp - 273))°").font(.largeTitle)
-            Text(response.weather[0].description)
+            Image(currentWeatherType.imageAuto).resizable().aspectRatio(contentMode: .fit).frame(width: 140, height: 140)
+            Text(currentWeatherType.description).font(.title)
+            Text("\(Int(mainTemp - 273))°").font(.largeTitle)
+            Text(detailDescription)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -110,16 +111,19 @@ struct LargeSectionView: View {
 }
 
 struct TempSectionView: View {
-    var response: CurrentWeatherResponse
+    let tempMin: Double
+    let tempMax: Double
+    let feelsLike: Double
+    let currentWeatherType: WeatherType
     
     var body: some View {
         HStack {
-            SmallColView(text: String(localized: "Min temp"), iconName: "thermometer.low", value: Int(response.main.tempMin) - 273, sign: "°")
-            SmallColView(text: String(localized: "Max temp"), iconName: "thermometer.high", value: Int(response.main.tempMax) - 273, sign: "°")
-            SmallColView(text: String(localized: "Feels temp"), iconName: "thermometer.variable.and.figure", value: Int(response.main.feelsLike) - 273, sign: "°")
+            SmallColView(text: String(localized: "Min temp"), iconName: "thermometer.low", value: Int(tempMin) - 273, sign: "°")
+            SmallColView(text: String(localized: "Max temp"), iconName: "thermometer.high", value: Int(tempMax) - 273, sign: "°")
+            SmallColView(text: String(localized: "Feels temp"), iconName: "thermometer.variable.and.figure", value: Int(feelsLike) - 273, sign: "°")
         }
         .frame(maxWidth: .infinity, minHeight: 120)
-        .modifier(WeatherCardModifier(weatherType: getWeatherType(from: response.weather[0].id)))
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
     }
 }
 
@@ -144,19 +148,16 @@ struct SmallColView: View {
 }
 
 struct SeqTempSectionView: View {
-    var response: ForecastResponse
-    var curRes: CurrentWeatherResponse
-    
-    var weatherType: WeatherType {
-        return getWeatherType(from: curRes.weather[0].id)
-    }
-    
+    let futureWeathers: [ForecastResponse.FutureWeather]
+    let currentWeatherType: WeatherType
+
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 30) {
-                ForEach(response.list, id: \.dt) { monoWeather in
+                ForEach(futureWeathers, id: \.dt) { monoWeather in
                     let date = Date(timeIntervalSince1970: monoWeather.dt)
-                    let imageStr = date.isNight ? weatherType.imageNight : weatherType.imageDay
+                    let monoWeatherType = getWeatherType(from: monoWeather.weather[0].id)
+                    let imageStr = date.isNight ? monoWeatherType.imageNight : monoWeatherType.imageDay
                     VStack(spacing: 10) {
                         Text(date.hourMinute)
                         Image(imageStr).resizable().aspectRatio(contentMode: .fit).frame(width: 30, height: 30)
@@ -169,47 +170,121 @@ struct SeqTempSectionView: View {
             .padding()
         }
         .frame(maxWidth: .infinity, minHeight: 120)
-        .modifier(WeatherCardModifier(weatherType: weatherType))
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
     }
 }
 
 struct DailySectionView: View {
-    var response: [DailyGeneratedResponse]
-    var curRes: CurrentWeatherResponse
+    let dailyWeathers: [DailyGeneratedResponse]
+    let currentWeatherType: WeatherType
     
-    var weatherType: WeatherType {
-        return getWeatherType(from: curRes.weather[0].id)
+    var maxDailyTemp: Int {
+        return dailyWeathers.map {Int($0.tempMax)}.max()!
+    }
+    var minDailyTemp: Int {
+        return dailyWeathers.map {Int($0.tempMin)}.min()!
     }
     
     var body: some View {
         VStack(spacing: 30) {
-            ForEach(response, id: \.dt) { monoWeather in
+            ForEach(dailyWeathers, id: \.dt) { monoWeather in
+                let monoWeatherType = getWeatherType(from: monoWeather.weatherID)
                 HStack(spacing: 10) {
                     Text(monoWeather.dt.weekdayFullname)
-                        .frame(width: 100)
-                        
-                    Image(weatherType.imageDay).resizable().aspectRatio(contentMode: .fit).frame(width: 30, height: 30)
-                        .frame(width: 100)
+                        .frame(width: 70)
+                    Image(monoWeatherType.imageDay).resizable().aspectRatio(contentMode: .fit).frame(width: 30, height: 30)
+                        .frame(width: 60)
                     Text("\(Int(monoWeather.tempMin) - 273)°")
-                        .frame(width: 50)
+                        .frame(width: 40)
+                    
+                    TempRange(minTempToday: Int(monoWeather.tempMin), maxTempToday: Int(monoWeather.tempMax), minTempGlobal: minDailyTemp, maxTempGlobal: maxDailyTemp)
+                    
                     Text("\(Int(monoWeather.tempMax) - 273)°")
-                        .frame(width: 50)
-                        
+                        .frame(width: 40)
                 }
             }
         }
-        .frame(maxWidth: .infinity, minHeight: CGFloat(response.count) * 60)
-        .modifier(WeatherCardModifier(weatherType: weatherType))
+        .frame(maxWidth: .infinity, minHeight: CGFloat(dailyWeathers.count) * 60)
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
+    }
+}
+
+struct TempRange: View {
+    let lineHeight: CGFloat = 4.0
+    let lineWidth: CGFloat = 80.0
+    
+    var minTempToday: Int
+    var maxTempToday: Int
+    
+    var minTempGlobal: Int
+    var maxTempGlobal: Int
+    
+    let _tempLineWidth: CGFloat = 40.0
+    
+    var scale: CGFloat {
+        return CGFloat(lineWidth) / CGFloat(maxTempGlobal-minTempGlobal)
+    }
+    
+    var startPos: CGFloat {
+        return scale * CGFloat(minTempToday - minTempGlobal)
+    }
+    
+    var endPos: CGFloat {
+        return lineWidth - (scale * CGFloat(maxTempGlobal - maxTempToday))
+    }
+    
+    let gradientColors = [
+        Color(#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)),
+        Color(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)),
+        Color(#colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)),
+        Color(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1))
+    ]
+    
+    var body: some View {
+        ZStack (alignment: .leading) {
+
+            // Temperature Scale Background
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.2)))
+                .frame(
+                    width: lineWidth,
+                    height: lineHeight,
+                    alignment: .center
+                )
+            
+            // Temperature Gradient Line
+            RoundedRectangle(cornerRadius: 10)
+                .fill(LinearGradient(
+                        gradient: Gradient(colors: gradientColors),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(
+                    maxWidth: lineWidth,
+                    maxHeight: lineHeight
+                )
+                .mask(
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 10).frame(width: endPos - startPos)
+                    }
+                    .frame(
+                        width: lineWidth,
+                        height: lineHeight,
+                        alignment: .leading
+                    )
+                    .offset(x: startPos)
+                )
+        }
     }
 }
 
 struct WindSectionView: View {
-    var response: CurrentWeatherResponse
-    
-    var weatherType: WeatherType {
-        return getWeatherType(from: response.weather[0].id)
-    }
-    
+    let windSpeed: Double
+    let windDeg: Int
+    let windGust: Double?
+    let currentWeatherType: WeatherType
+
     var body: some View {
         HStack {
             //Wind Clock
@@ -237,8 +312,8 @@ struct WindSectionView: View {
                 
                 Arrow()
                     .frame(width: 15, height: 50)
-                    .foregroundStyle(LinearGradient(gradient: Gradient(colors: [weatherType.primaryColor, weatherType.secondaryColor]), startPoint: .bottom, endPoint: .top))
-                    .rotationEffect(.degrees(Double(180 + response.wind.deg)))
+                    .foregroundStyle(LinearGradient(gradient: Gradient(colors: [currentWeatherType.primaryColor, currentWeatherType.secondaryColor]), startPoint: .bottom, endPoint: .top))
+                    .rotationEffect(.degrees(Double(180 + windDeg)))
                     
             }
             .padding(.horizontal, 10)
@@ -247,7 +322,7 @@ struct WindSectionView: View {
                 HStack {
                     Text("Wind speed")
                     Spacer()
-                    Text(String(format: "%.2fm/s", response.wind.speed))
+                    Text(String(format: "%.2fm/s", windSpeed))
                        
                 }
                 .frame(maxHeight: .infinity)
@@ -257,7 +332,7 @@ struct WindSectionView: View {
                     Text("Wind gust")
                         
                     Spacer()
-                    Text(String(format: "%.2fm/s", response.wind.gust ?? 0.0))
+                    Text(String(format: "%.2fm/s", windGust ?? 0.0))
                        
                 }
                 .frame(maxHeight: .infinity)
@@ -267,7 +342,7 @@ struct WindSectionView: View {
                     Text("Direction")
                         
                     Spacer()
-                    Text("\(response.wind.deg)°")
+                    Text("\(windDeg)°")
                         
                 }
                 .frame(maxHeight: .infinity)
@@ -277,7 +352,7 @@ struct WindSectionView: View {
             .font(.caption)
         }
         .frame(maxWidth: .infinity, minHeight: 150)
-        .modifier(WeatherCardModifier(weatherType: weatherType))
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
     }
 }
 
@@ -297,22 +372,20 @@ struct Arrow: Shape {
 }
 
 struct SunRiseSetView: View {
-    let response: CurrentWeatherResponse
-    
-    var weatherType: WeatherType {
-        return getWeatherType(from: response.weather[0].id)
-    }
+    let sunrise: Double
+    let sunset: Double
+    let currentWeatherType: WeatherType
     
     var body: some View {
         HStack {
-            RingView(color1: weatherType.primaryColor,color2: weatherType.secondaryColor,
+            RingView(color1: currentWeatherType.primaryColor,color2: currentWeatherType.secondaryColor,
                      radius: 50, percent:
-                        Date.now.percentInBeforeAfter(before: response.sys.sunrise, after: response.sys.sunset), show: .constant(true))
+                        Date.now.percentInBeforeAfter(before: sunrise, after: sunset), show: .constant(true))
             VStack {
                 HStack {
                     Text("Sunrise")
                     Spacer()
-                    Text(Date(timeIntervalSince1970: response.sys.sunrise).hourMinute)
+                    Text(Date(timeIntervalSince1970: sunrise).hourMinute)
                        
                 }
                 .frame(maxHeight: .infinity)
@@ -321,7 +394,7 @@ struct SunRiseSetView: View {
                 HStack {
                     Text("Sunset")
                     Spacer()
-                    Text(Date(timeIntervalSince1970: response.sys.sunset).hourMinute)
+                    Text(Date(timeIntervalSince1970: sunset).hourMinute)
                        
                 }
                 .frame(maxHeight: .infinity)
@@ -332,17 +405,14 @@ struct SunRiseSetView: View {
             .font(.caption)
         }
         .frame(maxWidth: .infinity, minHeight: 150)
-        .modifier(WeatherCardModifier(weatherType: weatherType))
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
     }
 }
 
 struct HumiditySectionView: View {
-    let response: CurrentWeatherResponse
-    
-    var weatherType: WeatherType {
-        return getWeatherType(from: response.weather[0].id)
-    }
-    
+    let humidity: Int
+    let currentWeatherType: WeatherType
+   
     var body: some View {
         VStack(spacing: 20) {
             HStack {
@@ -351,21 +421,18 @@ struct HumiditySectionView: View {
             }
             .font(.caption)
             
-            Text("\(response.main.humidity)%")
+            Text("\(humidity)%")
                 .font(.title)
             
         }
         .frame(maxWidth: .infinity, minHeight: 100)
-        .modifier(WeatherCardModifier(weatherType: weatherType))
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
     }
 }
 
 struct PressureSectionView: View {
-    let response: CurrentWeatherResponse
-    
-    var weatherType: WeatherType {
-        return getWeatherType(from: response.weather[0].id)
-    }
+    let pressure: Int
+    let currentWeatherType: WeatherType
     
     var body: some View {
         VStack(spacing: 20) {
@@ -375,21 +442,18 @@ struct PressureSectionView: View {
             }
             .font(.caption)
             
-            Text("\(response.main.pressure)pa")
+            Text("\(pressure)pa")
                 .font(.title)
             
         }
         .frame(maxWidth: .infinity, minHeight: 100)
-        .modifier(WeatherCardModifier(weatherType: weatherType))
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
     }
 }
 
 struct VisibilitySectionView: View {
-    let response: CurrentWeatherResponse
-    
-    var weatherType: WeatherType {
-        return getWeatherType(from: response.weather[0].id)
-    }
+    let visibility: Int
+    let currentWeatherType: WeatherType
     
     var body: some View {
         VStack(spacing: 20) {
@@ -399,12 +463,54 @@ struct VisibilitySectionView: View {
             }
             .font(.caption)
             
-            Text("\(response.visibility)m")
+            Text("\(visibility)m")
                 .font(.title)
             
         }
         .frame(maxWidth: .infinity, minHeight: 100)
-        .modifier(WeatherCardModifier(weatherType: weatherType))
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
+    }
+}
+
+struct RainSectionView: View {
+    let precipitation: Double
+    let currentWeatherType: WeatherType
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            HStack {
+                Image(systemName: "cloud.rain")
+                Text("Rain precipitation")
+            }
+            .font(.caption)
+            
+            Text("\(String(format: "%.2f", precipitation))mm/h")
+                .font(.title)
+            
+        }
+        .frame(maxWidth: .infinity, minHeight: 100)
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
+    }
+}
+
+struct SnowSectionView: View {
+    let precipitation: Double
+    let currentWeatherType: WeatherType
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            HStack {
+                Image(systemName: "cloud.snow")
+                Text("Snow precipitation")
+            }
+            .font(.caption)
+
+            Text("\(String(format: "%.2f", precipitation))mm/h")
+                .font(.title)
+            
+        }
+        .frame(maxWidth: .infinity, minHeight: 100)
+        .modifier(WeatherCardModifier(weatherType: currentWeatherType))
     }
 }
 

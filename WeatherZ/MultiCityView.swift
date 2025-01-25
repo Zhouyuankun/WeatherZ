@@ -26,13 +26,18 @@ struct MultiCityView: View {
         NavigationStack {
             List {
                 Section {
-                    NavigationLink(value: locationViewModel.localLocation) {
-                        CityCardView(cityInfo: locationViewModel.localLocation)
+                    if let currentLocation = locationViewModel.localLocation {
+                        NavigationLink(value: currentLocation) {
+                            CityCardView(cityInfo: currentLocation)
+                        }
+                        .deleteDisabled(true)
+                    } else {
+                        ProgressView()
                     }
-                    .deleteDisabled(true)
                 } header: {
                     Text("Current Location")
                 }
+                
                 
                 
                 Section {
@@ -51,7 +56,7 @@ struct MultiCityView: View {
                 }
             }
             .navigationDestination(for: Location.self) { city in
-                HomeView(city: city)
+                DetailWeatherView(city: city)
                     .environment(currentWeatherViewModel)
             }
             .navigationTitle("WeatherZ")

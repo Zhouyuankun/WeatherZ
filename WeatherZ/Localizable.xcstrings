@@ -4,6 +4,16 @@
     "%@" : {
 
     },
+    "%@mm/h" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@毫米/小时"
+          }
+        }
+      }
+    },
     "%lld%@" : {
       "localizations" : {
         "en" : {
@@ -350,6 +360,16 @@
         }
       }
     },
+    "Rain precipitation" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "降雨量"
+          }
+        }
+      }
+    },
     "Region: %@" : {
       "localizations" : {
         "zh-Hans" : {
@@ -386,6 +406,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "雪"
+          }
+        }
+      }
+    },
+    "Snow precipitation" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "降雪量"
           }
         }
       }

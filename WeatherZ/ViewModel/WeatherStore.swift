@@ -79,9 +79,9 @@ struct DailyGeneratedResponse {
     let weatherID: Int
 }
 
-func groupDatesByDay(dates: [ForecastResponse.MonoWeather]) async -> [Date: [ForecastResponse.MonoWeather]] {
+func groupDatesByDay(dates: [ForecastResponse.FutureWeather]) async -> [Date: [ForecastResponse.FutureWeather]] {
     let calendar = Calendar.current
-    var groupedDates: [Date: [ForecastResponse.MonoWeather]] = [:]
+    var groupedDates: [Date: [ForecastResponse.FutureWeather]] = [:]
     
     for date in dates {
         // Extract the start of the day for the current date
@@ -99,7 +99,7 @@ func groupDatesByDay(dates: [ForecastResponse.MonoWeather]) async -> [Date: [For
     return groupedDates
 }
 
-func summaryFutureWeather(weatherData: [Date: [ForecastResponse.MonoWeather]]) async -> [DailyGeneratedResponse] {
+func summaryFutureWeather(weatherData: [Date: [ForecastResponse.FutureWeather]]) async -> [DailyGeneratedResponse] {
     var result: [DailyGeneratedResponse] = []
     for (dt, monoday) in weatherData {
         var minTemp = monoday[0].main.tempMin

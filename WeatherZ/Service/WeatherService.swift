@@ -155,7 +155,7 @@ class WeatherService {
 
 //https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=4c5b613a9609b6ab7ab7fbd0b892eee5
 
-let defaultCurrentWeatherResponse = CurrentWeatherResponse(coord: .init(lon: 7.367, lat: 45.133), weather: [.init(id: 501, main: "Rain", description: "moderate rain", icon: "10d")], base: "stations", main: .init(temp: 284.2, feelsLike: 282.93, tempMin: 283.06, tempMax: 286.82, pressure: 1021, humidity: 60, seaLevel: 1021, grndLevel: 910), visibility: 10000, wind: .init(speed: 4.09, deg: 121, gust: 3.47), rain: .init(oneH: 2.73), clouds: .init(all: 83), dt: 1726660758, sys: .init(type: 1, id: 6736, country: "IT", sunrise: 1726636384, sunset: 1726680975), timezone: 7200, id: 3165523, name: "Province of Turin", cod: 200)
+let defaultCurrentWeatherResponse = CurrentWeatherResponse(coord: .init(lon: 7.367, lat: 45.133), weather: [.init(id: 501, main: "Rain", description: "moderate rain", icon: "10d")], base: "stations", main: .init(temp: 284.2, feelsLike: 282.93, tempMin: 283.06, tempMax: 286.82, pressure: 1021, humidity: 60, seaLevel: 1021, grndLevel: 910), visibility: 10000, wind: .init(speed: 4.09, deg: 121, gust: 3.47), rain: .init(oneH: 2.73), snow: nil, clouds: .init(all: 83), dt: 1726660758, sys: .init(type: 1, id: 6736, country: "IT", sunrise: 1726636384, sunset: 1726680975), timezone: 7200, id: 3165523, name: "Province of Turin", cod: 200)
 
 let defaultForecastWeatherResponse = ForecastResponse(
     cod: "200",
@@ -182,7 +182,7 @@ let defaultForecastWeatherResponse = ForecastResponse(
             wind: .init(speed: 0.62, deg: 349, gust: 1.18),
             visibility: 10000,
             pop: 0.32,
-            rain: .init(threeH: 0.26),
+            rain: .init(threeH: 0.26), snow: nil,
             sys: .init(pod: "d"),
             dtTxt: "2022-08-30 15:00:00"
         ),
@@ -206,7 +206,7 @@ let defaultForecastWeatherResponse = ForecastResponse(
             wind: .init(speed: 1.97, deg: 157, gust: 3.39),
             visibility: 10000,
             pop: 0.33,
-            rain: .init(threeH: 0.57),
+            rain: .init(threeH: 0.57), snow: nil,
             sys: .init(pod: "n"),
             dtTxt: "2022-08-30 18:00:00"
         ),
@@ -230,7 +230,7 @@ let defaultForecastWeatherResponse = ForecastResponse(
             wind: .init(speed: 2.66, deg: 210, gust: 3.58),
             visibility: 10000,
             pop: 0.7,
-            rain: .init(threeH: 0.49),
+            rain: .init(threeH: 0.49), snow: nil,
             sys: .init(pod: "n"),
             dtTxt: "2022-08-30 21:00:00"
         ),
@@ -254,7 +254,7 @@ let defaultForecastWeatherResponse = ForecastResponse(
             wind: .init(speed: 1.14, deg: 17, gust: 1.57),
             visibility: 10000,
             pop: 0,
-            rain: nil,
+            rain: nil, snow: nil,
             sys: .init(pod: "d"),
             dtTxt: "2022-09-04 12:00:00"
         )

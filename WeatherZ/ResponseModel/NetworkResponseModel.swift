@@ -14,9 +14,10 @@ struct CurrentWeatherResponse: Codable {
     let weather: [Weather]
     let base: String
     let main: Main
-    let visibility: Int
+    let visibility: Int?
     let wind: Wind
     let rain: Rain?
+    let snow: Snow?
     let clouds: Clouds
     let dt: Double
     let sys: Sys
@@ -69,6 +70,14 @@ struct CurrentWeatherResponse: Codable {
         }
     }
     
+    struct Snow: Codable {
+        let oneH: Double?
+        
+        enum CodingKeys: String, CodingKey {
+            case oneH = "1h"
+        }
+    }
+    
     // MARK: - Clouds
     struct Clouds: Codable {
         let all: Int
@@ -89,18 +98,19 @@ struct ForecastResponse: Codable {
     let cod: String
     let message: Int
     let cnt: Int
-    let list: [MonoWeather]
+    let list: [FutureWeather]
     let city: City
     
-    struct MonoWeather: Codable {
+    struct FutureWeather: Codable {
         let dt: Double
         let main: Main
         let weather: [Weather]
         let clouds: Clouds
         let wind: Wind
-        let visibility: Int
+        let visibility: Int?
         let pop: Double
         let rain: Rain?
+        let snow: Snow?
         let sys: Sys
         let dtTxt: String
     }
@@ -135,6 +145,14 @@ struct ForecastResponse: Codable {
     }
     
     struct Rain: Codable {
+        let threeH: Double?
+        
+        enum CodingKeys: String, CodingKey {
+            case threeH = "3h"
+        }
+    }
+    
+    struct Snow: Codable {
         let threeH: Double?
         
         enum CodingKeys: String, CodingKey {

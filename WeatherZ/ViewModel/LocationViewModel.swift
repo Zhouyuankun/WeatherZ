@@ -12,7 +12,7 @@ import Combine
 @Observable
 class LocationViewModel {
     var authorizationStatus: CLAuthorizationStatus = .notDetermined
-    var localLocation: Location = Location(name: String(localized: "Locating"), localName: "", state: nil, country: "", lat: 0.0, lon: 0.0, city: String(localized: "Locating"))
+    var localLocation: Location?
     
     var cancellables = Set<AnyCancellable>()
     
