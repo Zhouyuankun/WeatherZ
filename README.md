@@ -13,6 +13,7 @@ The iOS development features in this app includes:
 - CoreLocation: For user locating service and Geo transforms(Between Location name and latitude/longitude)
 - Dark Mode: The UI supports both light and dark mode.
 - Localization: Languege support for Chinese, English
+- Swift package management: *WeatherData*, *WeatherUI* for Modular programming
 
 The function of this app:
 
