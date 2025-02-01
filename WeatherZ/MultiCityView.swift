@@ -8,12 +8,11 @@
 import SwiftUI
 import CoreLocation
 import SwiftData
+import WeatherData
 
 struct MultiCityView: View {
     @Environment(LocationViewModel.self) var locationViewModel
     @Environment(\.scenePhase) private var scenePhase
-    
-    @State private var currentWeatherViewModel = CurrentWeatherViewModel()
     
     @State private var presentWeatherPage: Bool = true
     
@@ -57,7 +56,6 @@ struct MultiCityView: View {
             }
             .navigationDestination(for: Location.self) { city in
                 DetailWeatherView(city: city)
-                    .environment(currentWeatherViewModel)
             }
             .navigationTitle("WeatherZ")
             .toolbar {
@@ -89,10 +87,10 @@ struct CityCardView: View {
     var cityInfo: Location
     @State private var lastRefreshTime: Date? = nil
     
-    @State private var currentWeatherViewModel = CurrentWeatherViewModel()
+    @State var multiCityViewModel = MultiCityViewModel()
     
     var weatherType: WeatherType {
-        return getWeatherType(from: currentWeatherViewModel.currentWeather.weather[0].id)
+        return getWeatherType(from: multiCityViewModel.currentWeather.weather[0].id)
     }
     
     var body: some View {
@@ -126,14 +124,9 @@ struct CityCardView: View {
                 // Update the last refresh time and load data
                 lastRefreshTime = Date.now
                 print("Refreshing weather data...")
-                await currentWeatherViewModel.loadFromWeb(lon: cityInfo.lon, lat: cityInfo.lat)
+                await multiCityViewModel.loadFromWeb(lon: cityInfo.lon, lat: cityInfo.lat)
             }
         }
         
     }
-}
-
-func fullCountryName(from countryCode: String) -> String? {
-    let locale = Locale.current // Use a specific locale for the output language
-    return locale.localizedString(forRegionCode: countryCode.uppercased())
 }

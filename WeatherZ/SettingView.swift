@@ -5,6 +5,8 @@
 //  Created by 周源坤 on 1/23/25.
 //
 import SwiftUI
+import SwiftData
+import WeatherData
 
 struct SettingView: View {
     @Environment(\.modelContext) private var context

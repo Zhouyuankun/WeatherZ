@@ -20,7 +20,7 @@ public final class SubscribedLocation {
     public var lat: Double
     public var lon: Double
     
-    init(name: String, localName: String, city: String? = nil, state: String? = nil, country: String, lat: Double, lon: Double) {
+    public init(name: String, localName: String, city: String? = nil, state: String? = nil, country: String, lat: Double, lon: Double) {
         self.id = UUID()
         self.name = name
         self.localName = localName
@@ -32,25 +32,25 @@ public final class SubscribedLocation {
     }
 }
 
-struct Location: Hashable {
-    let name: String
-    let localName: String
-    let state: String? //for province
-    let country: String
-    let lat: Double
-    let lon: Double
+public struct Location: Hashable {
+    public let name: String
+    public let localName: String
+    public let state: String? //for province
+    public let country: String
+    public let lat: Double
+    public let lon: Double
     
     //addtional
-    let city: String?
+    public let city: String?
 }
 
-extension SubscribedLocation {
+public extension SubscribedLocation {
     var location: Location {
         return Location(name: self.name, localName: self.localName, state: self.state, country: self.country, lat: self.lat, lon: self.lon, city: self.city)
     }
 }
 
-extension Location {
+public extension Location {
     var belongInfo: String {
         var belongs: [String] = []
         if let city = self.city {

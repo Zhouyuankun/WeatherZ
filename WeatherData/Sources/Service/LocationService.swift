@@ -9,19 +9,18 @@ import Foundation
 import CoreLocation
 import Combine
 
-
-class LocationService: NSObject, CLLocationManagerDelegate {
-    private(set) static var shared = LocationService()
+public class LocationService: NSObject, CLLocationManagerDelegate {
+    public nonisolated(unsafe) static let shared = LocationService()
     
     private let locationManager: CLLocationManager
     
-    var currentPlacemark: CLPlacemark?
+    public var currentPlacemark: CLPlacemark?
     
-    var locationPub = PassthroughSubject<CLLocation, Never>()
-    var authPub = PassthroughSubject<CLAuthorizationStatus, Never>()
-    var localLocationPub = PassthroughSubject<Location, Never>()
+    public var locationPub = PassthroughSubject<CLLocation, Never>()
+    public var authPub = PassthroughSubject<CLAuthorizationStatus, Never>()
+    public var localLocationPub = PassthroughSubject<Location, Never>()
     
-    override init() {
+    public override init() {
         locationManager = CLLocationManager()
         authPub.send(locationManager.authorizationStatus)
         super.init()
@@ -30,22 +29,22 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
     }
     
-    func updateLoc() {
+    public func updateLoc() {
         locationManager.startUpdatingLocation()
     }
     
-    func requestPermission() {
+    public func requestPermission() {
         locationManager.requestWhenInUseAuthorization()
     }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         authPub.send(manager.authorizationStatus)
         if manager.authorizationStatus == .authorizedAlways || manager.authorizationStatus == .authorizedWhenInUse {
             updateLoc()
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let lastSeenLocation = locations.first!
         locationPub.send(lastSeenLocation)
         let geocoder = CLGeocoder()
@@ -53,26 +52,22 @@ class LocationService: NSObject, CLLocationManagerDelegate {
             self.currentPlacemark = placemarks?.first
         }
         if let currentPlacemark = currentPlacemark {
-            printPlacemarkDetails(currentPlacemark)
-            // Extract details from the placemark
             let cityName = currentPlacemark.subLocality ?? currentPlacemark.locality ?? "Unknown"
             let stateName = currentPlacemark.administrativeArea ?? nil
             let countryName = currentPlacemark.country ?? "Unknown"
             let latitude = lastSeenLocation.coordinate.latitude
             let longitude = lastSeenLocation.coordinate.longitude
             localLocationPub.send(Location(name: cityName, localName: cityName, state: stateName, country: countryName, lat: latitude, lon: longitude, city: currentPlacemark.locality))
-            //end updating
             manager.stopUpdatingLocation()
         }
     }
     
-    func getCityLocationInfo(cityName: String) async -> Result<[GeoAPIResponse], Error> {
+    public func getCityLocationInfo(cityName: String) async -> Result<[GeoAPIResponse], Error> {
         let geocoder = CLGeocoder()
         do {
             let placemarks = try await geocoder.geocodeAddressString(cityName)
             
             let filteredResponses = placemarks.compactMap { placemark -> GeoAPIResponse? in
-                // Ensure location exists and has valid coordinates
                 guard let location = placemark.location, let locality = placemark.subLocality ?? placemark.locality, let country = placemark.country else { return nil }
                 
                 // Extract latitude and longitude
@@ -100,7 +95,7 @@ class LocationService: NSObject, CLLocationManagerDelegate {
 }
 
 //Show all the location infomation
-func printPlacemarkDetails(_ placemark: CLPlacemark) {
+public func printPlacemarkDetails(_ placemark: CLPlacemark) {
     print("=== CLPlacemark Details ===")
     if let name = placemark.name {
         print("Name: \(name)")

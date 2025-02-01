@@ -1,26 +1,26 @@
 //
-//  WeatherType.swift
-//  WeatherZ
+//  File.swift
+//  WeatherData
 //
-//  Created by 周源坤 on 1/5/25.
+//  Created by 周源坤 on 1/25/25.
 //
 
 import SwiftUI
 
-enum WeatherType: String, Codable {
+public enum WeatherType: String, Codable {
     case Thunderstorm
     case Drizzle
     case Rain
     case Snow
-    case Atomosphere_dust
-    case Atomosphere_fog
-    case Atomosphere_wind
+    case Atmosphere_dust
+    case Atmosphere_fog
+    case Atmosphere_wind
     case Clear_sun
     case Clear_cloudless
     case Clear_clouds
 }
 
-struct WeatherSchemeDTO: Codable {
+public struct WeatherSchemeDTO: Codable {
     let type: WeatherType
     let primaryColor: String
     let secondaryColor: String
@@ -31,7 +31,7 @@ struct WeatherSchemeDTO: Codable {
 }
 
 // [WeatherType:WeatherSchemeInfo]
-struct WeatherSchemeInfo: Codable {
+public struct WeatherSchemeInfo: Codable {
     let primaryColor: String
     let secondaryColor: String
     let imageAuto: String
@@ -40,8 +40,8 @@ struct WeatherSchemeInfo: Codable {
     let backgound: String
 }
 
-class WeatherSchemeManager {
-    private(set) static var shared = WeatherSchemeManager()
+public class WeatherSchemeManager {
+    nonisolated(unsafe) static let shared = WeatherSchemeManager()
     
     private var weatherSchemeDict: [WeatherType:WeatherSchemeInfo] = [:]
     
@@ -77,7 +77,7 @@ class WeatherSchemeManager {
 
 
 
-struct WeatherScheme {
+public struct WeatherScheme {
     let id: Int
     let type: WeatherType
     let desc: String
@@ -85,7 +85,7 @@ struct WeatherScheme {
     let secondaryColor: String
 }
 
-func getWeatherType(from weatherCode: Int) -> WeatherType {
+public func getWeatherType(from weatherCode: Int) -> WeatherType {
     switch weatherCode / 100 {
     case 2: return .Thunderstorm
     case 3: return .Drizzle
@@ -93,10 +93,10 @@ func getWeatherType(from weatherCode: Int) -> WeatherType {
     case 6: return .Snow
     case 7:
         switch weatherCode {
-        case 701,711,721,741: return .Atomosphere_fog
-        case 731,751,761,762: return .Atomosphere_dust
-        case 771,781: return .Atomosphere_wind
-        default: return .Atomosphere_fog
+        case 701,711,721,741: return .Atmosphere_fog
+        case 731,751,761,762: return .Atmosphere_dust
+        case 771,781: return .Atmosphere_wind
+        default: return .Atmosphere_fog
         }
     case 8:
         switch weatherCode {
@@ -110,7 +110,7 @@ func getWeatherType(from weatherCode: Int) -> WeatherType {
     }
 }
 
-extension Color {
+public extension Color {
     init(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
@@ -126,7 +126,7 @@ extension Color {
     }
 }
 
-extension WeatherType {
+public extension WeatherType {
     var primaryColor: Color {
         return Color.init(hex: WeatherSchemeManager.shared.getSchemeInfo(weatherType: self).primaryColor)
     }
@@ -155,11 +155,11 @@ extension WeatherType {
             String(localized: "Rain")
         case .Snow:
             String(localized: "Snow")
-        case .Atomosphere_dust:
+        case .Atmosphere_dust:
             String(localized: "Dust")
-        case .Atomosphere_fog:
+        case .Atmosphere_fog:
             String(localized: "Fog")
-        case .Atomosphere_wind:
+        case .Atmosphere_wind:
             String(localized: "Wind")
         case .Clear_sun:
             String(localized: "Sun")
@@ -170,3 +170,4 @@ extension WeatherType {
         }
     }
 }
+

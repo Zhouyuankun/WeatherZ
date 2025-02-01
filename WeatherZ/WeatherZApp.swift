@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import WeatherData
 
 @main
 struct WeatherZApp: App {

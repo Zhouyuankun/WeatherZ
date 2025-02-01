@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Date {
+public extension Date {
     var weekdayFullname: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE" // Full weekday name

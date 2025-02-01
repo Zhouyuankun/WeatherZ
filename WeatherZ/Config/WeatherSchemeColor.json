@@ -36,31 +36,31 @@
     "backgound": "Snow_background"
   },
   {
-    "type": "Atomosphere_dust",
+    "type": "Atmosphere_dust",
     "primary_color": "#CDCDCD",
     "secondary_color": "#808080",
-    "image_auto": "Atomosphere",
-    "image_day": "Atomosphere",
-    "image_night": "Atomosphere",
-    "backgound": "Atomosphere_background"
+    "image_auto": "Atmosphere",
+    "image_day": "Atmosphere",
+    "image_night": "Atmosphere",
+    "backgound": "Atmosphere_background"
   },
   {
-    "type": "Atomosphere_fog",
+    "type": "Atmosphere_fog",
     "primary_color": "#CDCDCD",
     "secondary_color": "#808080",
-    "image_auto": "Atomosphere",
-    "image_day": "Atomosphere",
-    "image_night": "Atomosphere",
-    "backgound": "Atomosphere_background"
+    "image_auto": "Atmosphere",
+    "image_day": "Atmosphere",
+    "image_night": "Atmosphere",
+    "backgound": "Atmosphere_background"
   },
   {
-    "type": "Atomosphere_wind",
+    "type": "Atmosphere_wind",
     "primary_color": "#CDCDCD",
     "secondary_color": "#808080",
-    "image_auto": "Atomosphere",
-    "image_day": "Atomosphere",
-    "image_night": "Atomosphere",
-    "backgound": "Atomosphere_background"
+    "image_auto": "Atmosphere",
+    "image_day": "Atmosphere",
+    "image_night": "Atmosphere",
+    "backgound": "Atmosphere_background"
   },
   {
     "type": "Clear_sun",

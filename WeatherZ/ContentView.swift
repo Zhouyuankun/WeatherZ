@@ -8,9 +8,6 @@
 import SwiftUI
 import CoreLocation
 
-
-var location: CLLocation?
-
 struct ContentView: View {
     @State var locationViewModel = LocationViewModel()
     
@@ -50,38 +47,4 @@ struct RequestLocationView: View {
                 .font(.caption)
         }
     }
-}
-
-struct ErrorView: View {
-    var errorText: String
-    
-    var body: some View {
-        VStack {
-            Image(systemName: "xmark.octagon")
-                    .resizable()
-                .frame(width: 100, height: 100, alignment: .center)
-            Text(errorText)
-        }
-        .padding()
-        .foregroundColor(.white)
-        .background(Color.red)
-    }
-}
-
-struct PairView: View {
-    
-    let leftText: String
-    let rightText: String
-    
-    var body: some View {
-        HStack {
-            Text(leftText)
-            Spacer()
-            Text(rightText)
-        }
-    }
-}
-
-#Preview {
-    ContentView()
 }
