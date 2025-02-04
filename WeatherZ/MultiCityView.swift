@@ -26,9 +26,12 @@ struct MultiCityView: View {
             List {
                 Section {
                     if let currentLocation = locationViewModel.localLocation {
-                        NavigationLink(value: currentLocation) {
-                            CityCardView(cityInfo: currentLocation)
-                        }
+                        CityCardView(cityInfo: currentLocation)
+                            .background {
+                                NavigationLink(value: currentLocation) {
+                                    EmptyView() //for hidding navigation indicator
+                                }
+                            }
                         .deleteDisabled(true)
                     } else {
                         ProgressView()
@@ -37,13 +40,15 @@ struct MultiCityView: View {
                     Text("Current Location")
                 }
                 
-                
-                
                 Section {
                     ForEach(allCities, id: \.id) { cityInfo in
-                        NavigationLink(value: cityInfo.location) {
-                            CityCardView(cityInfo: cityInfo.location)
-                        }
+                        CityCardView(cityInfo: cityInfo.location)
+                            .background {
+                                NavigationLink(value: cityInfo.location) {
+                                    EmptyView()
+                                }
+                            }
+                        .listRowSeparator(.hidden)
                     }
                     .onDelete { offsets in
                         for i in offsets {
@@ -54,6 +59,7 @@ struct MultiCityView: View {
                     Text("Subscribed Locations")
                 }
             }
+            .scrollContentBackground(.hidden)
             .navigationDestination(for: Location.self) { city in
                 DetailWeatherView(city: city)
             }
@@ -75,9 +81,16 @@ struct MultiCityView: View {
                 }
             }
         }
+        .onAppear {
+            Task {
+                await locationViewModel.fetchLocation()
+            }
+        }
         .onChange(of: scenePhase, { _, newValue in
             if newValue == .active {
-                locationViewModel.updateLoc()
+                Task {
+                    await locationViewModel.fetchLocation()
+                }
             }
         })
     }
@@ -103,7 +116,13 @@ struct CityCardView: View {
                     .font(.caption)
             }
             Spacer()
-            Text("\(weatherType.description)")
+            VStack(alignment: .trailing) {
+                Text("\(Int(multiCityViewModel.currentWeather.main.temp) - 273)°")
+                    .font(.title)
+                Spacer()
+                Text("\(weatherType.description)")
+                    .font(.caption)
+            }
         }
         .padding()
         .background(
@@ -113,7 +132,7 @@ struct CityCardView: View {
                 endPoint: .bottom
             )
         )
-        .cornerRadius(5)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
         .onAppear {
             Task {
                 if let lastRefresh = lastRefreshTime, Date.now.timeIntervalSince(lastRefresh) < 60 {
