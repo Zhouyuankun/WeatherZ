@@ -14,8 +14,6 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
     
     private let locationManager: CLLocationManager
     
-    public var currentPlacemark: CLPlacemark?
-    
     public var locationPub = PassthroughSubject<CLLocation, Never>()
     public var authPub = PassthroughSubject<CLAuthorizationStatus, Never>()
     public var localLocationPub = PassthroughSubject<Location, Never>()
@@ -48,16 +46,14 @@ public class LocationService: NSObject, CLLocationManagerDelegate {
         let lastSeenLocation = locations.first!
         locationPub.send(lastSeenLocation)
         let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(lastSeenLocation) { (placemarks, error) in
-            self.currentPlacemark = placemarks?.first
-        }
-        if let currentPlacemark = currentPlacemark {
+        geocoder.reverseGeocodeLocation(lastSeenLocation) { [weak self] (placemarks, error) in
+            guard let currentPlacemark = placemarks?.first else { return }
             let cityName = currentPlacemark.subLocality ?? currentPlacemark.locality ?? "Unknown"
             let stateName = currentPlacemark.administrativeArea ?? nil
             let countryName = currentPlacemark.country ?? "Unknown"
             let latitude = lastSeenLocation.coordinate.latitude
             let longitude = lastSeenLocation.coordinate.longitude
-            localLocationPub.send(Location(name: cityName, localName: cityName, state: stateName, country: countryName, lat: latitude, lon: longitude, city: currentPlacemark.locality))
+            self?.localLocationPub.send(Location(name: cityName, localName: cityName, state: stateName, country: countryName, lat: latitude, lon: longitude, city: currentPlacemark.locality))
             manager.stopUpdatingLocation()
         }
     }
