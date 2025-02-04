@@ -34,7 +34,9 @@ struct RequestLocationView: View {
                 .frame(width: 100, height: 100, alignment: .center)
                 .foregroundColor(.blue)
             Button(action: {
-                locationViewModel.checkPermission()
+                Task {
+                    await locationViewModel.checkPermission()
+                }
             }, label: {
                 Label("Allow tracking", systemImage: "location")
             })

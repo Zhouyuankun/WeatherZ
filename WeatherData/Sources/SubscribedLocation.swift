@@ -32,7 +32,7 @@ public final class SubscribedLocation {
     }
 }
 
-public struct Location: Hashable {
+public struct Location: Hashable, Codable {
     public let name: String
     public let localName: String
     public let state: String? //for province
@@ -61,5 +61,33 @@ public extension Location {
         }
         belongs.append(self.country)
         return belongs.joined(separator: "-")
+    }
+}
+
+public extension UserDefaults {
+    static func saveLocation(location: Location) {
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(location)
+            let userDefault = UserDefaults(suiteName: "group.com.celeglow.weatherz")!
+            userDefault.set(data, forKey: "lastSeenLocation")
+            userDefault.synchronize()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    static func loadLocation() -> Location? {
+        let userDefault = UserDefaults(suiteName: "group.com.celeglow.weatherz")!
+        if let savedData = userDefault.data(forKey: "lastSeenLocation") {
+            let decoder = JSONDecoder()
+            do {
+                return try decoder.decode(Location.self, from: savedData)
+            } catch {
+                print(error.localizedDescription)
+            }
+            
+        }
+        print("No saved")
+        return nil
     }
 }

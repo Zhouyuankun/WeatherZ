@@ -15,6 +15,9 @@
         }
       }
     },
+    "%lld°" : {
+
+    },
     "%lldm" : {
       "extractionState" : "stale",
       "localizations" : {

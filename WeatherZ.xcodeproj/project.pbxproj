@@ -15,6 +15,8 @@
 		B604BE712D44D731007C1931 /* WeatherData in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B604BE6F2D44D457007C1931 /* WeatherData */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B604BE742D450EFD007C1931 /* WeatherUI in Frameworks */ = {isa = PBXBuildFile; productRef = B604BE732D450EFD007C1931 /* WeatherUI */; };
 		B604BE752D4511B4007C1931 /* WeatherUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B604BE732D450EFD007C1931 /* WeatherUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B604BE792D4DDDA2007C1931 /* WeatherData in Frameworks */ = {isa = PBXBuildFile; productRef = B604BE782D4DDDA2007C1931 /* WeatherData */; };
+		B604BE7A2D4DDDA2007C1931 /* WeatherData in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B604BE782D4DDDA2007C1931 /* WeatherData */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,17 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B604BE7B2D4DDDA2007C1931 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B604BE7A2D4DDDA2007C1931 /* WeatherData in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +73,7 @@
 		B604BD8C2D44C2C7007C1931 /* WeatherWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WeatherWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B604BE6E2D44D376007C1931 /* WeatherData */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = WeatherData; sourceTree = "<group>"; };
 		B604BE722D44D8B6007C1931 /* WeatherUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = WeatherUI; sourceTree = "<group>"; };
+		B604BEE42D51B151007C1931 /* WeatherWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherWidgetExtension.entitlements; sourceTree = "<group>"; };
 		B6D243C52D2AA4A400267EC4 /* WeatherZ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherZ.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -105,6 +119,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B604BD8E2D44C2C7007C1931 /* SwiftUI.framework in Frameworks */,
+				B604BE792D4DDDA2007C1931 /* WeatherData in Frameworks */,
 				B604BD8D2D44C2C7007C1931 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,6 +148,7 @@
 		B6D243BC2D2AA4A400267EC4 = {
 			isa = PBXGroup;
 			children = (
+				B604BEE42D51B151007C1931 /* WeatherWidgetExtension.entitlements */,
 				B604BE722D44D8B6007C1931 /* WeatherUI */,
 				B604BE6E2D44D376007C1931 /* WeatherData */,
 				B604BC032D32CC38007C1931 /* README.md */,
@@ -162,6 +178,7 @@
 				B604BD882D44C2C7007C1931 /* Sources */,
 				B604BD892D44C2C7007C1931 /* Frameworks */,
 				B604BD8A2D44C2C7007C1931 /* Resources */,
+				B604BE7B2D4DDDA2007C1931 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,6 +189,7 @@
 			);
 			name = WeatherWidgetExtension;
 			packageProductDependencies = (
+				B604BE782D4DDDA2007C1931 /* WeatherData */,
 			);
 			productName = WeatherWidgetExtension;
 			productReference = B604BD8C2D44C2C7007C1931 /* WeatherWidgetExtension.appex */;
@@ -294,6 +312,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WeatherWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QZ389N5Q44;
@@ -301,6 +320,9 @@
 				INFOPLIST_FILE = WeatherWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WeatherWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Please network";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Please loca";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = loca;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -322,6 +344,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WeatherWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QZ389N5Q44;
@@ -329,6 +352,9 @@
 				INFOPLIST_FILE = WeatherWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WeatherWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Please network";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Please loca";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = loca;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -471,6 +497,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WeatherZ/WeatherZ.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WeatherZ/Preview Content\"";
@@ -510,6 +537,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WeatherZ/WeatherZ.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WeatherZ/Preview Content\"";
@@ -584,6 +612,10 @@
 		B604BE732D450EFD007C1931 /* WeatherUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WeatherUI;
+		};
+		B604BE782D4DDDA2007C1931 /* WeatherData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WeatherData;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
