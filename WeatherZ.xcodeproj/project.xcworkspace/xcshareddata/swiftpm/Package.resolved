@@ -1,0 +1,15 @@
+{
+  "originHash" : "86b1115862ee5d876e12629292072b1db7348b8bc3e9ad8bae86dd5fbd9251f8",
+  "pins" : [
+    {
+      "identity" : "asynclocationkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AsyncSwift/AsyncLocationKit",
+      "state" : {
+        "revision" : "3a9f81e99ba3497a438d882676fb1c3ceb4f177c",
+        "version" : "1.6.4"
+      }
+    }
+  ],
+  "version" : 3
+}
