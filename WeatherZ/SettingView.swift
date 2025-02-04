@@ -21,6 +21,7 @@ struct SettingView: View {
                     Text("Delete all saved locations")
                 })
             }
+            
         }
         .alert("Confirm delete all saved locations", isPresented: $showAlert) {
             Button(role: .cancel, action: {}, label: {Text("Cancel")})

@@ -9,37 +9,37 @@ import Foundation
 import CoreLocation
 import Combine
 import WeatherData
+import WidgetKit
 
 @Observable
 class LocationViewModel {
-    var authorizationStatus: CLAuthorizationStatus = .notDetermined
+    var authorizationStatus: CLAuthorizationStatus
     var localLocation: Location?
-    
-    var cancellables = Set<AnyCancellable>()
-    
-    @ObservationIgnored var locationService: LocationService
-    var locationEnabled: Bool {
-        return authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse
-    }
+    var locationService: AsyncLocationService
     
     init() {
-        locationService = LocationService.shared
-        locationService.authPub.sink { [weak self] status in
-            self?.authorizationStatus = status
-        }.store(in: &cancellables)
-        locationService.localLocationPub.sink { [weak self] location in
-            self?.localLocation = location
-        }.store(in: &cancellables)
+        locationService = AsyncLocationService.shared
+        authorizationStatus = AsyncLocationService.shared.authStatus
     }
     
-    func updateLoc() {
+    var locationEnabled: Bool {
+        return AsyncLocationService.shared.authStatus == .authorizedAlways || AsyncLocationService.shared.authStatus == .authorizedWhenInUse
+    }
+    
+    func fetchLocation() async {
         guard locationEnabled else {
+            print("Please enable auth first")
             return
         }
-        locationService.updateLoc()
+        guard let location = await AsyncLocationService.shared.getCurrentLocation() else {
+            return
+        }
+        localLocation = location
+        UserDefaults.saveLocation(location: location)
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
-    func checkPermission() {
-        locationService.requestPermission()
+    func checkPermission() async {
+        authorizationStatus = await AsyncLocationService.shared.requestPermission()
     }
 }
