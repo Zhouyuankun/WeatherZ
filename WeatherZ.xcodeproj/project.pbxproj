@@ -92,6 +92,15 @@
 			);
 			target = B6D243C42D2AA4A400267EC4 /* WeatherZ */;
 		};
+		B604BF732D535550007C1931 /* Exceptions for "WeatherZ" folder in "WeatherWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				Config/WeatherSchemeColor.json,
+				Localizable.xcstrings,
+			);
+			target = B604BD8B2D44C2C7007C1931 /* WeatherWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -107,6 +116,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				B604BE6C2D44D2FD007C1931 /* Exceptions for "WeatherZ" folder in "WeatherZ" target */,
+				B604BF732D535550007C1931 /* Exceptions for "WeatherZ" folder in "WeatherWidgetExtension" target */,
 			);
 			path = WeatherZ;
 			sourceTree = "<group>";

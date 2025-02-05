@@ -262,6 +262,9 @@
         }
       }
     },
+    "Humidity: %lld%%" : {
+
+    },
     "Input city name" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -316,6 +319,9 @@
           }
         }
       }
+    },
+    "My Widget" : {
+
     },
     "North" : {
       "extractionState" : "stale",
@@ -522,6 +528,9 @@
         }
       }
     },
+    "This is an example widget." : {
+
+    },
     "Thunderstorm" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -552,6 +561,9 @@
           }
         }
       }
+    },
+    "UpdateTime: %@" : {
+
     },
     "Visibility" : {
       "extractionState" : "stale",
@@ -623,6 +635,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "风速"
+          }
+        }
+      }
+    },
+    "Wind: %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Wind: %1$@ (%2$@)"
           }
         }
       }

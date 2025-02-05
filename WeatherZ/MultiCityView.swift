@@ -59,6 +59,7 @@ struct MultiCityView: View {
                     Text("Subscribed Locations")
                 }
             }
+            .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
             .navigationDestination(for: Location.self) { city in
                 DetailWeatherView(city: city)

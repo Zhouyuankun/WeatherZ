@@ -169,5 +169,29 @@ public extension WeatherType {
             String(localized: "Cloud")
         }
     }
+    var systemImageString: String {
+        switch self {
+        case .Thunderstorm:
+            return "cloud.bolt"
+        case .Drizzle:
+            return "cloud.rain"
+        case .Rain:
+            return "cloud.rain"
+        case .Snow:
+            return "cloud.snow"
+        case .Atmosphere_dust:
+            return "aqi.medium"
+        case .Atmosphere_fog:
+            return "cloud.fog"
+        case .Atmosphere_wind:
+            return "wind"
+        case .Clear_sun:
+            return "sun.max"
+        case .Clear_cloudless:
+            return "cloud.sun"
+        case .Clear_clouds:
+            return "cloud"
+        }
+    }
 }
 

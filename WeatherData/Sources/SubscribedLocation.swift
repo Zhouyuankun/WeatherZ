@@ -32,7 +32,7 @@ public final class SubscribedLocation {
     }
 }
 
-public struct Location: Hashable, Codable {
+public struct Location: Hashable, Codable, Sendable {
     public let name: String
     public let localName: String
     public let state: String? //for province
