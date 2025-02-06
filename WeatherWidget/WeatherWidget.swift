@@ -8,6 +8,7 @@
 import WidgetKit
 import SwiftUI
 import WeatherData
+import WeatherUI
 
 struct WeatherDataProvider: TimelineProvider {
     
@@ -81,18 +82,28 @@ struct WeatherWidgetEntryView : View {
     var entry: WeatherDataProvider.Entry
     @Environment(\.widgetFamily) var widgetFamily
     
-    var body: some View {
-        switch widgetFamily {
-        case .systemSmall:
-            SmallWidgetView(entry: entry)
-        case .systemMedium:
-            SmallWidgetView(entry: entry)
-        case .systemLarge:
-            SmallWidgetView(entry: entry)
-        default:
-            SmallWidgetView(entry: entry)
+    @ViewBuilder
+    func errorView() -> some View {
+        VStack {
+            Text(entry.errorMsg!)
         }
-        
+    }
+    
+    var body: some View {
+        if entry.errorMsg == nil {
+            switch widgetFamily {
+            case .systemSmall:
+                SmallWidgetView(entry: entry)
+            case .systemMedium:
+                MediumWidgetView(entry: entry)
+            case .systemLarge:
+                LargeWidgetView(entry: entry)
+            default:
+                SmallWidgetView(entry: entry)
+            }
+        } else {
+            errorView()
+        }
     }
 }
 
@@ -131,8 +142,7 @@ struct SmallWidgetView: View {
         return directions[index]
     }
     
-    @ViewBuilder
-    func successView() -> some View {
+    var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 Text(entry.locationName)
@@ -141,6 +151,7 @@ struct SmallWidgetView: View {
             }
             Divider()
             Label(currentWeatherType.description, systemImage: currentWeatherType.systemImageString)
+                .padding(.top, 5)
 
             Group {
                 Text("Wind: \(windDescription(speed: entry.currentWeather.wind.speed)) (\(windDirection(degrees: entry.currentWeather.wind.deg)))")
@@ -159,19 +170,71 @@ struct SmallWidgetView: View {
                 .overlay(.ultraThinMaterial)
         }
     }
-    
-    @ViewBuilder
-    func errorView() -> some View {
-        VStack {
-            Text(entry.errorMsg!)
-        }
+}
+
+struct MediumWidgetView: View {
+    let entry: WeatherDataProvider.Entry
+    var currentWeatherType: WeatherType {
+        return getWeatherType(from: entry.currentWeather.weather[0].id)
     }
     
     var body: some View {
-        if entry.errorMsg == nil {
-            successView()
-        } else {
-            errorView()
+        VStack(alignment: .leading) {
+            HStack {
+                Text(entry.locationName)
+                Spacer()
+                Label(currentWeatherType.description, systemImage: currentWeatherType.systemImageString)
+                Spacer()
+                Text("\(Int(entry.currentWeather.main.temp) - 273)°")
+            }
+            Divider()
+            WidgetSeqTempSectionView(futureWeathers: entry.forecastWeather.list, currentWeatherType: currentWeatherType)
+                .padding(.top, 5)
+            Spacer()
+            Text("UpdateTime: \(entry.updateTime.hourMinuteSecond)")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .containerBackground(for: .widget) {
+            Image(currentWeatherType.background)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .overlay(.ultraThinMaterial)
+        }
+    }
+}
+
+struct LargeWidgetView: View {
+    let entry: WeatherDataProvider.Entry
+    var currentWeatherType: WeatherType {
+        return getWeatherType(from: entry.currentWeather.weather[0].id)
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text(entry.locationName)
+                Spacer()
+                Label(currentWeatherType.description, systemImage: currentWeatherType.systemImageString)
+                Spacer()
+                Text("\(Int(entry.currentWeather.main.temp) - 273)°")
+            }
+            Divider()
+            WidgetSeqTempSectionView(futureWeathers: entry.forecastWeather.list, currentWeatherType: currentWeatherType)
+                .padding(.top, 5)
+            Divider()
+            WidgetDailySectionView(forecastWeather: entry.forecastWeather, currentWeatherType: currentWeatherType)
+                .padding(.top, 5)
+            Spacer()
+            Text("UpdateTime: \(entry.updateTime.hourMinuteSecond)")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .containerBackground(for: .widget) {
+            Image(currentWeatherType.background)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .overlay(.ultraThinMaterial)
         }
     }
 }

@@ -17,6 +17,8 @@
 		B604BE752D4511B4007C1931 /* WeatherUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B604BE732D450EFD007C1931 /* WeatherUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B604BE792D4DDDA2007C1931 /* WeatherData in Frameworks */ = {isa = PBXBuildFile; productRef = B604BE782D4DDDA2007C1931 /* WeatherData */; };
 		B604BE7A2D4DDDA2007C1931 /* WeatherData in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B604BE782D4DDDA2007C1931 /* WeatherData */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B65D537D2D545242004166CC /* WeatherUI in Frameworks */ = {isa = PBXBuildFile; productRef = B65D537C2D545242004166CC /* WeatherUI */; };
+		B65D537E2D545242004166CC /* WeatherUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = B65D537C2D545242004166CC /* WeatherUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +62,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				B604BE7A2D4DDDA2007C1931 /* WeatherData in Embed Frameworks */,
+				B65D537E2D545242004166CC /* WeatherUI in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +134,7 @@
 				B604BD8E2D44C2C7007C1931 /* SwiftUI.framework in Frameworks */,
 				B604BE792D4DDDA2007C1931 /* WeatherData in Frameworks */,
 				B604BD8D2D44C2C7007C1931 /* WidgetKit.framework in Frameworks */,
+				B65D537D2D545242004166CC /* WeatherUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,6 +204,7 @@
 			name = WeatherWidgetExtension;
 			packageProductDependencies = (
 				B604BE782D4DDDA2007C1931 /* WeatherData */,
+				B65D537C2D545242004166CC /* WeatherUI */,
 			);
 			productName = WeatherWidgetExtension;
 			productReference = B604BD8C2D44C2C7007C1931 /* WeatherWidgetExtension.appex */;
@@ -626,6 +631,10 @@
 		B604BE782D4DDDA2007C1931 /* WeatherData */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WeatherData;
+		};
+		B65D537C2D545242004166CC /* WeatherUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WeatherUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
