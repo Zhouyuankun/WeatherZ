@@ -19,7 +19,7 @@ The function of this app:
 
 - Always get current location and its weather
   
-  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/permission.jpg" width="210px" /><img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/multicity.png" width="210px" />
+  <img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/permission.png" width="210px" /><img src="https://github.com/Zhouyuankun/WeatherZ/blob/main/README.assets/multicity.png" width="210px" />
   
 - Can add city from device location service, from OpenWeatherMap location service
   
